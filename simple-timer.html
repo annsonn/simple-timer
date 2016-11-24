@@ -1,0 +1,100 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`simple-timer`
+Simple timer.
+
+@demo demo/index.html 
+-->
+
+<dom-module id="simple-timer">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    {{currentTime}}
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'simple-timer',
+
+      properties: {
+        /**
+        * Start time for the timer in seconds
+        * @default 60
+        */
+        startTime: {
+          type: Number,
+          value: 60
+        },
+        /**
+        * Current time of the timer, in seconds
+        */
+        currentTime: {
+          type: Number,
+          notify: true
+        },
+        /**
+        * True if the timer is currently running
+        * @default false
+        */
+        isRunning: {
+          type: Boolean,
+          reflectToAttribute: true,
+          notify: true,
+          value: false
+        },
+        /**
+        * Time the timer has spent running since it was started
+        */
+        _elapsedTime: {
+          type: Number,
+          value: 0
+        }
+      },
+      
+      ready: function() {
+        this.set('currentTime', this.startTime);
+      },
+
+      start: function() {
+        this.set('currentTime', this.startTime);
+        this.set('_elapsed', 0);
+        
+        if (!this.startTime || this.isRunning) {
+          return;
+        }
+        this._elapsed = Math.floor(performance.now()/1000);
+        this.isRunning = true;
+        window.requestAnimationFrame(this._decreaseTimer.bind(this));
+      },
+
+      pause: function() {
+        this.isRunning = false;
+      },
+
+      _decreaseTimer: function(timestamp) {
+        if (!this.isRunning) {
+          return;
+        }
+        if (this.currentTime <= 0) {
+          // timer is over
+          this.pause();
+          this.fire('iron-timer-end');
+          return;
+        }
+        var now = Math.floor(timestamp/1000);
+        // Compute the relative progress based on the time spent running
+        var progress = now - this._elapsed;
+        this.currentTime = this.currentTime - progress;
+        this._elapsed = now;
+        window.requestAnimationFrame(this._decreaseTimer.bind(this));
+      }
+
+    });
+  </script>
+</dom-module>
