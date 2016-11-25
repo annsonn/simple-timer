@@ -1,7 +1,11 @@
 {
   "name": "simple-timer",
+  "version": "1.0.0",
   "description": "Simple timer.",
   "main": "simple-timer.html",
+  "keywords": [
+    "web-components", "polymer", "simple", "timer"
+  ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
   },
