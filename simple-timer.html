@@ -64,13 +64,16 @@ Simple timer.
 
       ready: function() {
         this.set('currentTime', this.startTime);
+        this.set('_formattedTime', this.startTime.toString());
       },
 
       start: function() {
-        this.set('currentTime', this.startTime);
-        this.set('_elapsed', 0);
-        
+        if (this.currentTime <= 0) {
+          this.set('currentTime', this.startTime);
+        }
+
         if (!this.startTime || this.isRunning) {
+          this.pause();
           return;
         }
         this._elapsed = performance.now()/1000;
@@ -104,7 +107,7 @@ Simple timer.
 
       _formatTime: function(time) {
         var timeString = time.toString().split('.');
-        return timeString[0] === '-0' ? 0 : timeString[0] + '.' + timeString[1].substring(0,2);
+        return timeString[0].indexOf('-') === 0 ? 0 : timeString[0] + '.' + timeString[1].substring(0,2);
       }
     });
   </script>

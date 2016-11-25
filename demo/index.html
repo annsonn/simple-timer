@@ -27,11 +27,22 @@
         </template>
       </demo-snippet>
     </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic simple-timer demo</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <simple-timer id="timer" start-time="5"></simple-timer>
+          <paper-button on-tap="start">Start</paper-button>
+        </template>
+      </demo-snippet>
+    </div>
     <script>
-			var scope = document.querySelector('template[is=dom-bind]');
-			scope.start = function() {
-				this.$.timer.start();
-			};
+			var scopes = document.querySelectorAll('template[is=dom-bind]');
+      scopes.forEach(function(scope) {
+        scope.start = function() {
+          this.$.timer.start();
+        };
+      });
 		</script>
   </body>
 </html>
