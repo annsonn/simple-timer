@@ -2,9 +2,13 @@
 
 Simple timer.
 
-## Install the Polymer-CLI
+[![Build Status](https://travis-ci.org/annsonn/simple-timer.svg?branch=master)](https://travis-ci.org/annsonn/simple-timer)
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+## Example
+
+```
+<simple-timer start-time="120"></simple-timer>
+```
 
 ## Running 
 Use the 'polymer-cli' to test/demo component
