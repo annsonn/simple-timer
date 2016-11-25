@@ -14,7 +14,7 @@ Simple timer.
         display: block;
       }
     </style>
-    {{currentTime}}
+    {{_formattedTime}}
   </template>
 
   <script>
@@ -54,9 +54,14 @@ Simple timer.
         _elapsedTime: {
           type: Number,
           value: 0
+        },
+
+        _formattedTime: {
+          type: String,
+          value: '0'
         }
       },
-      
+
       ready: function() {
         this.set('currentTime', this.startTime);
       },
@@ -68,7 +73,7 @@ Simple timer.
         if (!this.startTime || this.isRunning) {
           return;
         }
-        this._elapsed = Math.floor(performance.now()/1000);
+        this._elapsed = performance.now()/1000;
         this.isRunning = true;
         window.requestAnimationFrame(this._decreaseTimer.bind(this));
       },
@@ -83,18 +88,24 @@ Simple timer.
         }
         if (this.currentTime <= 0) {
           // timer is over
+          this.currentTime = 0;
           this.pause();
           this.fire('iron-timer-end');
           return;
         }
-        var now = Math.floor(timestamp/1000);
+        var now = timestamp/1000;
         // Compute the relative progress based on the time spent running
         var progress = now - this._elapsed;
         this.currentTime = this.currentTime - progress;
+        this._formattedTime = this._formatTime(this.currentTime);
         this._elapsed = now;
         window.requestAnimationFrame(this._decreaseTimer.bind(this));
-      }
+      },
 
+      _formatTime: function(time) {
+        var timeString = time.toString().split('.');
+        return timeString[0] === '-0' ? 0 : timeString[0] + '.' + timeString[1].substring(0,2);
+      }
     });
   </script>
 </dom-module>
