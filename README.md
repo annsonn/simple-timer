@@ -3,6 +3,8 @@
 Simple timer.
 
 [![Build Status](https://travis-ci.org/annsonn/simple-timer.svg?branch=master)](https://travis-ci.org/annsonn/simple-timer)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/annsonn/simple-timer)
+
 
 ## Example
 
