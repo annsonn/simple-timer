@@ -36,6 +36,15 @@
         </template>
       </demo-snippet>
     </div>
+    <div class="vertical-section-container centered">
+      <h3>Basic count up simple-timer demo</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <simple-timer id="timer" start-time="5" count-up="true"></simple-timer>
+          <paper-button on-tap="start">Start</paper-button>
+        </template>
+      </demo-snippet>
+    </div>
     <script>
 			var scopes = document.querySelectorAll('template[is=dom-bind]');
       scopes.forEach(function(scope) {

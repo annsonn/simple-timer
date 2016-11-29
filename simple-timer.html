@@ -49,6 +49,14 @@ Simple timer.
           value: false
         },
         /**
+        * Set to true to have timer count up
+        * @default false
+        */
+        countUp: {
+          type: Boolean,
+          value: false
+        },
+        /**
         * Time the timer has spent running since it was started
         */
         _elapsedTime: {
@@ -63,15 +71,22 @@ Simple timer.
       },
 
       ready: function() {
-        this.set('currentTime', this.startTime);
-        this.set('_formattedTime', this.startTime.toString());
+        if (this.countUp) {
+          this.set('currentTime', 0);
+          this.set('_formattedTime', '0');
+        } else {
+          this.set('currentTime', this.startTime);
+          this.set('_formattedTime', this.startTime.toString());
+        }
       },
 
       start: function() {
-        if (this.currentTime <= 0) {
-          this.set('currentTime', this.startTime);
+        if ((this.currentTime <= 0 && !this.countUp) 
+            || (this.currentTime >= this.startTime && this.countUp) ) {
+          // timer is over
+          this.currentTime = this.countUp ? this.startTime : 0;
         }
-
+        
         if (!this.startTime || this.isRunning) {
           this.pause();
           return;
@@ -89,17 +104,19 @@ Simple timer.
         if (!this.isRunning) {
           return;
         }
-        if (this.currentTime <= 0) {
+        if ((this.currentTime <= 0 && !this.countUp) 
+            || (this.currentTime >= this.startTime && this.countUp) ) {
           // timer is over
-          this.currentTime = 0;
+          this.currentTime = this.countUp ? this.startTime : 0;
           this.pause();
           this.fire('simple-timer-end');
           return;
         }
+
         var now = timestamp/1000;
         // Compute the relative progress based on the time spent running
         var progress = now - this._elapsed;
-        this.currentTime = this.currentTime - progress;
+        this.currentTime = this.countUp ? this.currentTime + progress : this.currentTime - progress;
         this._formattedTime = this._formatTime(this.currentTime);
         this._elapsed = now;
         window.requestAnimationFrame(this._decreaseTimer.bind(this));
